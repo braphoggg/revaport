@@ -10,9 +10,12 @@ interface PieLabelRenderProps {
   cy?: number
   midAngle?: number
   outerRadius?: number
+  startAngle?: number
+  endAngle?: number
+  percent?: number
   ticker?: string
   weight_pct?: number
-  market_value?: number
+  payload?: PortfolioAllocation
 }
 
 /** Custom label renderer.
@@ -24,8 +27,10 @@ interface PieLabelRenderProps {
  *    further out, so positions like warrants stay labelled instead of being
  *    rendered as a coloured-but-anonymous wedge. Sub-1% slices drop the
  *    percent (showing "0%" would be misleading) and keep just the ticker.
- *  - Skips truly zero-value entries (no price data) — they have no visible
- *    slice and a stray label there would overlap a real one.
+ *  - Skips entries that have NO visible slice (zero angular sweep). We use
+ *    `endAngle - startAngle` rather than `market_value` because Recharts
+ *    doesn't reliably spread every payload field into the label-renderer
+ *    props — the angle pair always is.
  */
 function renderLabel(c: typeof CHART_LIGHT | typeof CHART_DARK) {
   return function PieLabel(props: PieLabelRenderProps) {
@@ -34,13 +39,25 @@ function renderLabel(c: typeof CHART_LIGHT | typeof CHART_DARK) {
       cy = 0,
       midAngle = 0,
       outerRadius = 0,
-      ticker,
-      weight_pct,
-      market_value = 0,
+      startAngle = 0,
+      endAngle = 0,
+      percent,
+      payload,
     } = props
-    if (!ticker || weight_pct == null || market_value <= 0) return null
+    // Belt-and-braces: read ticker/weight_pct either from the spread props
+    // (Recharts ≤ v2 behaviour) or from the payload (Recharts v3 behaviour),
+    // so we don't depend on which one the version is doing.
+    const ticker = props.ticker ?? payload?.ticker
+    const weightPct =
+      props.weight_pct ??
+      payload?.weight_pct ??
+      (typeof percent === 'number' ? percent * 100 : undefined)
 
-    const isSmall = weight_pct < 4
+    if (!ticker || weightPct == null) return null
+    // Skip entries with no visible wedge at all (zero sweep angle).
+    if (Math.abs(endAngle - startAngle) < 0.0001) return null
+
+    const isSmall = weightPct < 4
     const labelOffset = isSmall ? 26 : 14
     const cos = Math.cos(-midAngle * RADIAN)
     const sin = Math.sin(-midAngle * RADIAN)
@@ -61,7 +78,7 @@ function renderLabel(c: typeof CHART_LIGHT | typeof CHART_DARK) {
 
     // Sub-1% would round to "0%" — drop the percent for those and just print
     // the ticker so it doesn't read as zero weight.
-    const text = weight_pct >= 1 ? `${ticker} ${weight_pct.toFixed(0)}%` : ticker
+    const text = weightPct >= 1 ? `${ticker} ${weightPct.toFixed(0)}%` : ticker
 
     return (
       <g>

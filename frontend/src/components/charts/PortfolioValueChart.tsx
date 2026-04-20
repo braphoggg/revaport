@@ -9,7 +9,7 @@ import {
   CartesianGrid,
 } from 'recharts'
 import { usePortfolioHistory } from '@/hooks/usePortfolio'
-import { fmtDate, fmtUsd } from '@/lib/format'
+import { fmtAxisDate, fmtDate, fmtUsd } from '@/lib/format'
 import { useChartPalette } from './chartTheme'
 
 const RANGES = ['1W', '1M', '3M', '1Y', '5Y', 'MAX'] as const
@@ -60,10 +60,11 @@ export function PortfolioValueChart() {
               <CartesianGrid stroke={c.edge} strokeDasharray="2 4" opacity={0.4} />
               <XAxis
                 dataKey="date"
-                tickFormatter={(v) => fmtDate(v)}
+                tickFormatter={(v) => fmtAxisDate(v, range)}
                 fontSize={11}
                 stroke={c.inkMuted}
                 tick={{ fill: c.inkMuted, fontFamily: 'JetBrains Mono, monospace' }}
+                minTickGap={48}
               />
               <YAxis
                 tickFormatter={(v) => fmtUsd(v)}
