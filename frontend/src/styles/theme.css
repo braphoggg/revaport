@@ -1,0 +1,82 @@
+/* Disco Elysium design tokens.
+   Defined via Tailwind 4 @theme so utilities like bg-paper, text-ink,
+   font-display are auto-generated. Dark mode swaps the variable values
+   via prefers-color-scheme; utilities pick them up because Tailwind 4
+   compiles utilities as `var(--color-x)` references. */
+
+@theme {
+  /* Surfaces */
+  --color-paper: #e8dcc4;
+  --color-paper-2: #ddcfb1;
+  --color-paper-3: #d2c19f;
+
+  /* Text */
+  --color-ink: #2a2218;
+  --color-ink-muted: #5e4f3c;
+
+  /* Accents */
+  --color-teal: #3d6470;
+  --color-teal-2: #4a7a87;
+  --color-umber: #7d4f2c;
+  --color-brass: #a8853e;
+  --color-oxblood: #8d3527;
+  --color-moss: #5a6b3a;
+  --color-rust: #a94f3a;
+  --color-edge: #a89880;
+
+  /* Fonts */
+  --font-display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --font-body: 'EB Garamond', Georgia, 'Times New Roman', serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+}
+
+/* Dark mode = oil painting in a dim room.
+   Apply when EITHER:
+     - the user has explicitly chosen dark via [data-theme="dark"], or
+     - the system prefers dark AND the user has not explicitly chosen light.
+   This lets the manual toggle override the OS preference in either direction
+   while still defaulting to "auto" when no choice has been stored. */
+
+/* Token block as a CSS custom @mixin via duplication — keep these two
+   selector blocks in lockstep. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-paper: #1a1612;
+    --color-paper-2: #241e18;
+    --color-paper-3: #2e2620;
+
+    --color-ink: #e8dcc4;
+    --color-ink-muted: #a89880;
+
+    --color-teal: #5a8794;
+    --color-teal-2: #6f9ba9;
+    --color-umber: #a87045;
+    --color-brass: #c9a557;
+    --color-oxblood: #b34a3a;
+    --color-moss: #7a8c52;
+    --color-rust: #c4634a;
+    --color-edge: #3a3128;
+  }
+}
+
+:root[data-theme="dark"] {
+  --color-paper: #1a1612;
+  --color-paper-2: #241e18;
+  --color-paper-3: #2e2620;
+
+  --color-ink: #e8dcc4;
+  --color-ink-muted: #a89880;
+
+  --color-teal: #5a8794;
+  --color-teal-2: #6f9ba9;
+  --color-umber: #a87045;
+  --color-brass: #c9a557;
+  --color-oxblood: #b34a3a;
+  --color-moss: #7a8c52;
+  --color-rust: #c4634a;
+  --color-edge: #3a3128;
+}
+
+/* Sync the native color-scheme so form controls + scrollbars match. */
+:root[data-theme="dark"]  { color-scheme: dark; }
+:root[data-theme="light"] { color-scheme: light; }

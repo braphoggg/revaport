@@ -1,0 +1,44 @@
+/* Disco Elysium animations — irregular, organic, never smooth SaaS easing.
+   Wrapped in prefers-reduced-motion: no-preference so users with
+   reduced-motion enabled get a fully static UI. */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Slow irregular flicker — for live indicators */
+  @keyframes flicker {
+    0%, 100% { opacity: 1; }
+    21% { opacity: 0.97; }
+    23% { opacity: 1; }
+    47% { opacity: 0.93; }
+    49% { opacity: 1; }
+    71% { opacity: 0.98; }
+    89% { opacity: 0.99; }
+  }
+
+  /* Loading flicker — slower, deeper */
+  @keyframes pulse-flicker {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  /* Content mount: paper settling. Opacity-only so it doesn't fight
+     inline `transform: rotate(...)` set on tilted cards. */
+  @keyframes fade-in-paper {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  /* Brief jitter for buttons — like reaching for a quill */
+  @keyframes jitter {
+    0%   { transform: translate(0, 0); }
+    40%  { transform: translate(0.5px, -0.5px); }
+    60%  { transform: translate(-0.3px, 0.4px); }
+    100% { transform: translate(0, 0); }
+  }
+
+  .animate-flicker        { animation: flicker 6.7s ease-in-out infinite; }
+  .animate-pulse-flicker  { animation: pulse-flicker 1.4s ease-in-out infinite; }
+  .animate-fade-in-paper  { animation: fade-in-paper 600ms ease-out both; }
+
+  .hover-jitter           { transition: transform 80ms ease-out; }
+  .hover-jitter:hover     { animation: jitter 320ms ease-out; }
+}

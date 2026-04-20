@@ -1,0 +1,114 @@
+/* Paper grain, vignette, warm shadows.
+   The noise SVG is a small (200x200) tile encoded as data URL so the
+   browser can repeat it cheaply rather than rasterizing a full-viewport
+   filter every paint. */
+
+:root {
+  --noise-svg: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.05  0 0 0 0 0.04  0 0 0 0 0.03  0 0 0 0.18 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+}
+
+/* Body becomes the parchment. Vignette overlay creates candlelight focus. */
+body {
+  background-color: var(--color-paper);
+  background-image: var(--noise-svg);
+  background-repeat: repeat;
+  position: relative;
+  min-height: 100%;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 55%, rgba(20, 14, 8, 0.18) 100%);
+  z-index: 1;
+}
+
+#root {
+  position: relative;
+  z-index: 2;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) body::after {
+    background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.6) 100%);
+  }
+}
+:root[data-theme="dark"] body::after {
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.6) 100%);
+}
+
+/* Reusable surface utilities */
+.paper {
+  background-color: var(--color-paper);
+  background-image: var(--noise-svg);
+}
+.paper-2 {
+  background-color: var(--color-paper-2);
+  background-image: var(--noise-svg);
+}
+.paper-3 {
+  background-color: var(--color-paper-3);
+  background-image: var(--noise-svg);
+}
+
+/* Hand-drawn-ish irregular border-radius (subtle, not gimmicky) */
+.rounded-paper { border-radius: 6px 9px 5px 8px; }
+.rounded-paper-lg { border-radius: 10px 14px 9px 12px; }
+.rounded-paper-sm { border-radius: 4px 6px 3px 5px; }
+
+/* Warm umber-tinted shadows instead of cool gray */
+.shadow-paper {
+  box-shadow:
+    0 1px 2px rgba(125, 79, 44, 0.18),
+    0 6px 18px rgba(125, 79, 44, 0.13);
+}
+.shadow-paper-lg {
+  box-shadow:
+    0 2px 6px rgba(125, 79, 44, 0.22),
+    0 16px 40px rgba(125, 79, 44, 0.20);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .shadow-paper {
+    box-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.55),
+      0 6px 18px rgba(0, 0, 0, 0.45);
+  }
+  :root:not([data-theme="light"]) .shadow-paper-lg {
+    box-shadow:
+      0 2px 6px rgba(0, 0, 0, 0.6),
+      0 16px 40px rgba(0, 0, 0, 0.5);
+  }
+}
+:root[data-theme="dark"] .shadow-paper {
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.55),
+    0 6px 18px rgba(0, 0, 0, 0.45);
+}
+:root[data-theme="dark"] .shadow-paper-lg {
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.6),
+    0 16px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* Subtle alternating tilt for stacked cards (used via :nth-child) */
+.tilt-cards > *:nth-child(odd) { transform: rotate(-0.35deg); }
+.tilt-cards > *:nth-child(even) { transform: rotate(0.45deg); }
+.tilt-cards > * { transform-origin: center; }
+
+/* Tabular numbers for ledger feel — applied to .num spans */
+.num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+/* Display italic helper for expressive headings */
+.display-italic {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: 0.005em;
+}
