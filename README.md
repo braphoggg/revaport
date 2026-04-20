@@ -1,4 +1,4 @@
-# port
+# revaport
 
 A local-first stock portfolio tracker. FastAPI + React, SQLite on disk, prices
 from Yahoo. Runs entirely on your machine — your transactions never leave it.
