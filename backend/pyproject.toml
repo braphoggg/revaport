@@ -1,5 +1,5 @@
 [project]
-name = "port-backend"
+name = "revaport-backend"
 version = "0.1.0"
 description = "Local stock portfolio tracker backend"
 requires-python = ">=3.12"

@@ -22,7 +22,7 @@ export function Shell() {
       >
         <div className="px-5 py-5 flex items-center gap-2.5 border-b border-edge/60">
           <BookOpen className="h-5 w-5 text-brass animate-flicker" />
-          <span className="font-display italic text-xl text-ink tracking-wider">port</span>
+          <span className="font-display italic text-xl text-ink tracking-wider">revaport</span>
           <span className="ml-auto font-display text-xs text-ink-muted tracking-widest uppercase">
             ledger
           </span>

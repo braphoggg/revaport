@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState, useSyncExternalStore } from 'react'
 export type Theme = 'auto' | 'light' | 'dark'
 export type ResolvedTheme = 'light' | 'dark'
 
-const STORAGE_KEY = 'port-theme'
+const STORAGE_KEY = 'revaport-theme'
 
 /** Read the persisted theme choice. 'auto' if none/invalid/inaccessible. */
 function readStored(): Theme {

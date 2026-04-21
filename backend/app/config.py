@@ -3,7 +3,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_prefix="PORT_", env_file=".env", extra="ignore")
+    model_config = SettingsConfigDict(env_prefix="REVAPORT_", env_file=".env", extra="ignore")
 
     db_path: Path = Path(__file__).resolve().parent.parent / "data" / "portfolio.db"
     api_host: str = "127.0.0.1"

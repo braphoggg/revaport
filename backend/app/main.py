@@ -19,7 +19,7 @@ async def lifespan(_app: FastAPI):
         stop_scheduler()
 
 
-app = FastAPI(title="port", version="0.1.0", lifespan=lifespan)
+app = FastAPI(title="revaport", version="0.1.0", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,

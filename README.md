@@ -48,7 +48,7 @@ automatically.
 
 ```bash
 git clone <this repo>
-cd port
+cd revaport
 python scripts/dev.py
 ```
 
@@ -113,14 +113,14 @@ If yfinance is rate-limiting, calls are spaced by `yfinance_min_gap_ms`
 ## Project layout
 
 ```
-port/
+revaport/
 ├── backend/
 │   ├── app/
 │   │   ├── models/         SQLAlchemy models (Holding, Transaction, Lot, PriceSnapshot, …)
 │   │   ├── routers/        FastAPI endpoints (/api/holdings, /transactions, /prices, /portfolio, /stream)
 │   │   ├── services/       Pure logic (cost_basis, splits, price_service, scheduler, yfinance_client)
 │   │   ├── schemas/        Pydantic request/response models
-│   │   ├── config.py       env-driven settings (PORT_* vars)
+│   │   ├── config.py       env-driven settings (REVAPORT_* vars)
 │   │   └── main.py         app factory + lifespan
 │   ├── data/portfolio.db   local SQLite (gitignored)
 │   └── tests/              pytest suite
@@ -159,20 +159,20 @@ transactions — easy to test, easy to reason about, no in-place mutation.
 
 ## Configuration
 
-All settings come from environment variables prefixed `PORT_` (or a
+All settings come from environment variables prefixed `REVAPORT_` (or a
 `backend/.env` file):
 
 | Variable | Default | Notes |
 |---|---|---|
-| `PORT_DB_PATH` | `backend/data/portfolio.db` | SQLite file location |
-| `PORT_API_HOST` / `PORT_API_PORT` | `127.0.0.1` / `8000` | uvicorn bind |
-| `PORT_PRICE_CACHE_TTL_MARKET_SECONDS` | `60` | "fresh" window during market hours |
-| `PORT_PRICE_CACHE_TTL_CLOSED_SECONDS` | `900` | …and when closed |
-| `PORT_SCHEDULER_TICK_MARKET_SECONDS` | `60` | refresh cadence (market hours) |
-| `PORT_SCHEDULER_TICK_CLOSED_SECONDS` | `900` | refresh cadence (closed) |
-| `PORT_YFINANCE_MIN_GAP_MS` | `500` | space requests this far apart |
-| `PORT_YFINANCE_MAX_RETRIES` | `3` | per-ticker retries on failure |
-| `PORT_CORS_ORIGINS` | `localhost:5173` | CORS allowlist |
+| `REVAPORT_DB_PATH` | `backend/data/portfolio.db` | SQLite file location |
+| `REVAPORT_API_HOST` / `REVAPORT_API_PORT` | `127.0.0.1` / `8000` | uvicorn bind |
+| `REVAPORT_PRICE_CACHE_TTL_MARKET_SECONDS` | `60` | "fresh" window during market hours |
+| `REVAPORT_PRICE_CACHE_TTL_CLOSED_SECONDS` | `900` | …and when closed |
+| `REVAPORT_SCHEDULER_TICK_MARKET_SECONDS` | `60` | refresh cadence (market hours) |
+| `REVAPORT_SCHEDULER_TICK_CLOSED_SECONDS` | `900` | refresh cadence (closed) |
+| `REVAPORT_YFINANCE_MIN_GAP_MS` | `500` | space requests this far apart |
+| `REVAPORT_YFINANCE_MAX_RETRIES` | `3` | per-ticker retries on failure |
+| `REVAPORT_CORS_ORIGINS` | `localhost:5173` | CORS allowlist |
 
 ---
 
